@@ -23,7 +23,6 @@ public class Main {
             int opcion = scanner.nextInt();
             partida.ronda(opcion);
             if (partida.turno) {
-                System.out.print("Elige qué carta jugar: 1, 2, 3?");
                 cartaAJugar = scanner.nextInt();
                 partida.jugada(partida.manoJugador().get(cartaAJugar - 1));
             }

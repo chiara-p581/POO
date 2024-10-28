@@ -18,7 +18,7 @@ public class Bot {
         envido = Carta.calcularEnvido(mano);
     }
 
-    public boolean responderEnvido(){
+    public boolean responderEnvido(){ //para aceptar o rechazar envido
         if (envido > 26){
             return true;
         } else if(envido == 20 && Math.random()<0.5){ // 50% de probabilidad de aceptar un envido para mentir
@@ -28,41 +28,52 @@ public class Bot {
         }
     }
 
-    public Carta realizarJugada(int num){
+    public boolean responderTruco(){
+        if(jugarCartaAlta().getJerarquia() > 7){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
-            if(num ==0){
-                if(esPrimera()){
-                    if(jugarCartaMedia().getJerarquia() > 4){
-                        return jugarCartaMedia();
-                    } else{
-                        return jugarCartaBaja();
-                    }
-                }
-                if(esSegunda()){
-                    if(jugarCartaBaja().getJerarquia() > 7){
-                        //cantar truco
-                    }else{
-                        return jugarCartaBaja();
-                    }
-                }
-                if (jugarCartaAlta().getJerarquia() > 7){
-                    //cantar truco
-                    return jugarCartaAlta();
+    public Carta realizarJugada(int num){
+        if(num ==0){
+            if(esPrimera()){
+                if(jugarCartaMedia().getJerarquia() > 4){
+                    return jugarCartaMedia();
+                } else{
+                    return jugarCartaBaja();
                 }
             }
-
-            if(num != 0){
-                if(jugarParda(num) != null && jugarCartaAlta().getJerarquia()>5){
-                    return jugarParda(num);
-                }
-                if(elegirMejorOpcion(num) != null){
-                    return elegirMejorOpcion(num);
+            if(esSegunda()){
+                if(jugarCartaBaja().getJerarquia() > 7){
+                    cantarTruco();
                 }else{
                     return jugarCartaBaja();
                 }
             }
+            if (jugarCartaAlta().getJerarquia() > 7){
+                cantarTruco();
+                return jugarCartaAlta();
+            }
+        }
+
+        if(num != 0){
+            if(jugarParda(num) != null && jugarCartaAlta().getJerarquia()>5){
+                return jugarParda(num);
+            }
+            if(elegirMejorOpcion(num) != null){
+                return elegirMejorOpcion(num);
+            }else{
+                return jugarCartaBaja();
+            }
+        }
 
         return null;
+    }
+
+    public void cantarTruco(){ //hay que acepta el teclado para seguir
+        System.out.println("El bot canta truco.");
     }
 
     public Carta jugarCartaAlta() {

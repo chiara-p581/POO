@@ -67,7 +67,19 @@ public class Partida {
     }
 
     public void truco(){
-        
+        System.out.println("Truco cantado! Aceptas?");
+        boolean botAcepta = bot.responderTruco();
+        if (botAcepta) {
+            System.out.println("El Bot acepta el Truco.");
+            if (manoBot.size() ==1){
+                Carta ultimoCarta = manoBot.get(0);
+                System.out.println(ultimoCarta);
+            }else {
+                System.out.println("Sigue el juego.");
+            }
+        }else {
+            System.out.println("El bot rechaza el Truco,has ganado el partida!");
+        }
     }
 
     public void ronda(int valor){
@@ -75,14 +87,18 @@ public class Partida {
             switch (valor){
                 case 1:
                     //jugada
-                    if (!repartirMano().isEmpty()){
-
+                    if (!manoJugador.isEmpty()) {
+                        System.out.println("Elige qué carta jugar: 1, 2, 3?");
+                    } else {
+                        System.out.println("No tienes cartas para jugar.");
                     }
                     break;
                 case 2:
-                    //truco
+                    truco();
+                    break;
                 case 3:
-                    //envido
+                    envido();
+                    break;
             }
         }
     }
