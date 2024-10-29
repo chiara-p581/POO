@@ -62,7 +62,7 @@ public class Partida {
             }
         } else {
             System.out.println("¡El bot rechaza el envido! ¡Ganaste el envido!");
-            puntaje_jugador += 2;
+            puntaje_jugador += 1;
         }
     }
 
