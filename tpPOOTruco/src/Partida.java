@@ -22,11 +22,13 @@ public class Partida {
         System.out.println("Mano de Jugador:"+ manoJugador);
     }
 
-    public List<Carta> repartirMano(){
+    public List<Carta> repartirMano() {
         Mazo mazo = new Mazo();
-        bot.setMano(mazo.repartir());
-        return mazo.repartir();
+        List<Carta> manoBot = mazo.repartir(); // Reparte las cartas para el bot
+        bot.setMano(manoBot); // Establece la mano del bot
+        return mazo.repartir(); // Devuelve la mano del jugador
     }
+
 
     public void jugada(Carta carta){
         if (turno){
@@ -62,7 +64,7 @@ public class Partida {
             }
         } else {
             System.out.println("¡El bot rechaza el envido! ¡Ganaste el envido!");
-            puntaje_jugador += 1;
+            puntaje_jugador += 2;
         }
     }
 
@@ -88,7 +90,8 @@ public class Partida {
                 case 1:
                     //jugada
                     if (!manoJugador.isEmpty()) {
-                        System.out.println("Elige qué carta jugar: 1, 2, 3?");
+                        Carta cartaJugador = manoJugador.get(0);
+                        jugada(cartaJugador);
                     } else {
                         System.out.println("No tienes cartas para jugar.");
                     }
