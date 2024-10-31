@@ -28,8 +28,7 @@ public class Main {
             System.out.print(nombre + ", ¿qué opción deseas elegir? ");
             int opcion = scanner.nextInt();
 
-            switch (opcion) {
-                case 1:
+            if (opcion==1) {
                     System.out.println("Elige qué carta jugar (1, 2 o 3): ");
                     int cartaAJugar = scanner.nextInt();
                     List<Carta> manoJugador = partida.manoJugador();
@@ -41,13 +40,13 @@ public class Main {
                     } else {
                         System.out.println("Opción inválida. Selecciona un número entre 1 y " + manoJugador.size());
                     }
-                    break;
+                    break;}
 
-                case 2:
+                if (opcion==2){
                     partida.truco();
-                    break;
+                    break;}
 
-                default:
+                if else{
                     System.out.println("Opción inválida.");
                     i--; // Repetir la ronda si la opción es inválida
                     break;
