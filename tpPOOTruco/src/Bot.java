@@ -1,125 +1,78 @@
 import java.util.*;
+
 public class Bot {
     private List<Carta> mano;
     private boolean primera;
-    private boolean segunda;
     private int envido;
 
-    public Bot(){
+    public Bot() {
         primera = true;
-        segunda = true;
     }
 
     public void setMano(List<Carta> mano) {
-        mano.sort(Comparator.comparingInt(Carta::getJerarquia).reversed());
-        System.out.print("Mano del bot: ");
-        System.out.println(mano.toString());
-        System.out.println("");
-        envido = Carta.calcularEnvido(mano);
+        this.mano = new ArrayList<>(mano); // Copia la mano para evitar modificarla externamente
+        this.mano.sort(Comparator.comparingInt(Carta::getJerarquia).reversed()); // Ordena la mano por jerarquía descendente
+        envido = Carta.calcularEnvido(this.mano);
     }
 
-    public boolean responderEnvido(){ //para aceptar o rechazar envido
-        if (envido > 26){
+    public boolean responderEnvido() {
+        if (envido > 26) {
             return true;
-        } else if(envido == 20 && Math.random()<0.5){ // 50% de probabilidad de aceptar un envido para mentir
+        } else if (envido >= 20 && Math.random() < 0.5) { // 50% probabilidad de aceptar un envido para mentir
             return true;
-        }else{
-            return false;
         }
+        return false;
     }
 
-    public boolean responderTruco(){
-        if(jugarCartaAlta().getJerarquia() > 7){
-            return true;
-        }else {
-            return false;
-        }
+    public boolean responderTruco() {
+        return !mano.isEmpty() && jugarCartaAlta().getJerarquia() > 7; // Acepta el truco si tiene una carta alta
     }
 
-    public Carta realizarJugada(int num){
-        if(num ==0){
-            if(esPrimera()){
-                if(jugarCartaMedia().getJerarquia() > 4){
-                    return jugarCartaMedia();
-                } else{
-                    return jugarCartaBaja();
-                }
-            }
-            if(esSegunda()){
-                if(jugarCartaBaja().getJerarquia() > 7){
-                    cantarTruco();
-                }else{
-                    return jugarCartaBaja();
-                }
-            }
-            if (jugarCartaAlta().getJerarquia() > 7){
-                cantarTruco();
-                return jugarCartaAlta();
+    public Carta realizarJugada(int jerarquiaRival) {
+        Carta cartaAJugar;
+        if (jerarquiaRival == 0) { // Primera jugada del bot
+            cartaAJugar = esPrimera() && jugarCartaMedia() != null && jugarCartaMedia().getJerarquia() > 4
+                    ? jugarCartaMedia() : jugarCartaBaja();
+        } else {
+            cartaAJugar = elegirMejorOpcion(jerarquiaRival); // Juega la mejor opción posible
+            if (cartaAJugar == null) {
+                cartaAJugar = jugarCartaBaja(); // Si no tiene mejor opción, juega la carta baja
             }
         }
-
-        if(num != 0){
-            if(jugarParda(num) != null && jugarCartaAlta().getJerarquia()>5){
-                return jugarParda(num);
-            }
-            if(elegirMejorOpcion(num) != null){
-                return elegirMejorOpcion(num);
-            }else{
-                return jugarCartaBaja();
-            }
-        }
-
-        return null;
+        mano.remove(cartaAJugar); // Elimina la carta jugada de la mano del bot
+        return cartaAJugar;
     }
 
-    public void cantarTruco(){ //hay que acepta el teclado para seguir
+    public void cantarTruco() {
         System.out.println("El bot canta truco.");
     }
 
-    public Carta jugarCartaAlta() {
-        return mano.get(0);
-    }
-    public Carta jugarCartaMedia() {
-        if(mano.size() == 3){
-            return mano.get(1);
-        }
-        return null;
+    private Carta jugarCartaAlta() {
+        return mano.isEmpty() ? null : mano.get(0); // La carta más alta es la primera después de ordenar
     }
 
-    public Carta jugarCartaBaja() {
-        List<Carta> aux = mano.reversed();
-        return aux.get(0);
+    private Carta jugarCartaMedia() {
+        return mano.size() == 3 ? mano.get(1) : null; // Devuelve la carta media si tiene tres cartas en la mano
     }
-    public Carta elegirMejorOpcion(int valor){
-        List<Carta> aux = mano.reversed();
-        for(Carta cart : aux){
-            if (cart.getJerarquia() > valor){
-                return cart;
-            }
-        }
-        return null;
+
+    private Carta jugarCartaBaja() {
+        return mano.isEmpty() ? null : mano.get(mano.size() - 1); // La carta baja es la última después de ordenar
     }
-    public Carta jugarParda(int valor){
-        for(Carta carta : mano){
-            if(carta.getValor() ==valor){
+
+    private Carta elegirMejorOpcion(int jerarquiaRival) {
+        for (Carta carta : mano) { // Busca la carta más baja que aún gane a la carta del jugador
+            if (carta.getJerarquia() > jerarquiaRival) {
                 return carta;
             }
         }
-        return null;
+        return null; // Si no encuentra una carta mejor, devuelve null
     }
-
 
     public void setPrimera(boolean primera) {
         this.primera = primera;
     }
 
-    public void setSegunda(boolean segunda) {
-        this.segunda = segunda;
-    }
-    public boolean esPrimera(){
-        return mano.size()==3;
-    }
-    public boolean esSegunda(){
-        return mano.size()==2;
+    public boolean esPrimera() {
+        return mano.size() == 3;
     }
 }
