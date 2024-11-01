@@ -4,19 +4,19 @@ public class Partida {
     private Bot bot;
     private int puntajeBot;
     private int puntajeJugador;
-    private boolean turno; // true para jugador, false para bot
+    private boolean turno; 
     private boolean juegoActivo;
     private List<Carta> manoJugador;
     private List<Carta> manoBot;
-    private boolean inicioRondaPorBot; // Controla quién inicia la ronda
+    private boolean inicioRondaPorBot; 
 
     public Partida() {
         this.bot = new Bot();
         this.puntajeBot = 0;
         this.puntajeJugador = 0;
-        this.turno = true; // El jugador comienza el primer turno
+        this.turno = true; 
         this.juegoActivo = true;
-        this.inicioRondaPorBot = false; // Inicialmente, el jugador comienza la ronda
+        this.inicioRondaPorBot = false;
     }
 
     public void iniciarPartida() {
