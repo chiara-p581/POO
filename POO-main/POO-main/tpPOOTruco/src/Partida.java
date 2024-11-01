@@ -3,7 +3,6 @@ import java.util.*;
 
 public class Partida {
     private Bot bot;
-    private Resumen resumen;
     private int puntajeBot;
     private int puntajeJugador;
     private boolean turno;
@@ -25,8 +24,6 @@ public class Partida {
         bot.setMano(manoBot);
         System.out.println("Mano de Bot: " + manoBot);
         System.out.println("Mano de Jugador: " + manoJugador);
-        resumen = new Resumen(manoJugador,manoBot);
-
     }
 
     public List<Carta> repartirMano() {
@@ -91,8 +88,8 @@ public class Partida {
                 System.out.println("Perdiste la ronda.");
                 turno = false;
             }
-        } else if(!turno){
-            System.out.println("Bot jugó la carta: " + bot.realizarJugada(0));
+        } else {
+            System.out.println("Bot jugó la carta: " + cartaJugador);
             Carta cartaJugadorNueva = pedirCartaAlJugador();
             System.out.println("Jugador jugó la carta: " + cartaJugadorNueva);
 
@@ -158,6 +155,5 @@ public class Partida {
         System.out.println("\nPuntaje Final:");
         System.out.println("Jugador: " + puntajeJugador);
         System.out.println("Bot: " + puntajeBot);
-        resumen.resumenJuego(puntajeJugador,puntajeBot);
     }
 }
