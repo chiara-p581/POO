@@ -11,6 +11,8 @@ public class Partida {
     private List<Carta> manoJugador;
     private List<Carta> manoBot;
     private boolean inicioRondaPorBot;
+    private int rondasGanadasJugador;
+    private int rondasGanadasBot;
 
     public Partida() {
         this.bot = new Bot();
@@ -19,6 +21,8 @@ public class Partida {
         this.turno = true;
         this.juegoActivo = true;
         this.inicioRondaPorBot = false;
+        this.rondasGanadasBot = 0;
+        this.rondasGanadasJugador = 0;
 
     }
 
@@ -86,7 +90,7 @@ public class Partida {
         }
 
         // Mostrar puntaje final si el juego sigue activo después de las rondas
-        if (juegoActivo) {
+        if (!juegoActivo) {
             mostrarPuntajeFinal();
         }
     }
@@ -100,9 +104,11 @@ public class Partida {
             if (cartaJugador.getJerarquia() > cartaBot.getJerarquia()) {
                 System.out.println("¡Ganaste la ronda!");
                 turno = true;
+                rondasGanadasJugador++;
             } else {
                 System.out.println("Perdiste la ronda.");
                 turno = false;
+                rondasGanadasBot++;
             }
         } else if (inicioRondaPorBot) {
             Carta cartaBot = bot.realizarJugada(0); // Bot elige carta
@@ -114,11 +120,23 @@ public class Partida {
             if (cartaJugadorNueva.getJerarquia() > cartaBot.getJerarquia()) {
                 System.out.println("¡Ganaste la ronda!");
                 turno = true;
+                rondasGanadasJugador++;
             } else {
                 System.out.println("Perdiste la ronda.");
                 turno = false;
+                rondasGanadasBot++;
             }
             inicioRondaPorBot = false;
+        }
+
+        if (rondasGanadasBot == 2){
+            juegoActivo = false;
+            puntajeBot++;
+        }
+
+        if (rondasGanadasJugador == 2){
+            juegoActivo = false;
+            puntajeJugador++;
         }
     }
 
@@ -153,7 +171,7 @@ public class Partida {
             System.out.println("El Bot acepta el Truco.");
         } else {
             System.out.println("El bot rechaza el Truco, ¡has ganado la partida!");
-            puntajeJugador += 1;
+            puntajeJugador += 2;
             juegoActivo = false;
         }
     }

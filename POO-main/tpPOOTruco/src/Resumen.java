@@ -13,7 +13,7 @@ public class Resumen {
     }
 
     public void resumenJuego(int puntaje_jugador, int puntaje_bot){
-        String nombreArchivo = "resumen_partida.txt";
+        String nombreArchivo = "resumen_partida.json";
         try (FileWriter writer = new FileWriter(nombreArchivo)) {
             writer.write("Resumen de la partida de Truco\n");
             writer.write("-----------------------------\n");
