@@ -153,7 +153,7 @@ public class Partida {
             System.out.println("El Bot acepta el Truco.");
         } else {
             System.out.println("El bot rechaza el Truco, ¡has ganado la partida!");
-            puntajeJugador += 2;
+            puntajeJugador += 1;
             juegoActivo = false;
         }
     }
