@@ -10,7 +10,6 @@ public class Partida {
     private boolean juegoActivo;
     private List<Carta> manoJugador;
     private List<Carta> manoBot;
-    private boolean inicioRondaPorBot;
     private int rondasGanadasJugador;
     private int rondasGanadasBot;
 
@@ -20,7 +19,6 @@ public class Partida {
         this.puntajeJugador = 0;
         this.turno = true;
         this.juegoActivo = true;
-        this.inicioRondaPorBot = false;
         this.rondasGanadasBot = 0;
         this.rondasGanadasJugador = 0;
 
@@ -56,7 +54,6 @@ public class Partida {
             System.out.println("\nRonda " + (i + 1));
 
             if (i == 1 && !turno) {
-                inicioRondaPorBot = true;
                 jugada(null); // Permite que el bot inicie la jugada
             } else {
                 System.out.println("1: Jugar carta");
@@ -67,10 +64,8 @@ public class Partida {
                 switch (opcion) {
                     case 1:
                         if (turno) {
-                            inicioRondaPorBot = false;
                             jugada(pedirCartaAlJugador());
                         } else {
-                            inicioRondaPorBot = true;
                             jugada(null);
                         }
                         break;
@@ -103,15 +98,14 @@ public class Partida {
 
             if (cartaJugador.getJerarquia() > cartaBot.getJerarquia()) {
                 System.out.println("¡Ganaste la ronda!");
-                turno = true;
                 rondasGanadasJugador++;
             } else {
                 System.out.println("Perdiste la ronda.");
-                turno = false;
+                turno = !turno;
                 rondasGanadasBot++;
             }
-        } else if (inicioRondaPorBot) {
-            Carta cartaBot = bot.realizarJugada(0); // Bot elige carta
+        } else {
+            Carta cartaBot = bot.realizarJugada(0);
             System.out.println("Bot jugó la carta: " + cartaBot);
 
             Carta cartaJugadorNueva = pedirCartaAlJugador();
@@ -119,14 +113,12 @@ public class Partida {
 
             if (cartaJugadorNueva.getJerarquia() > cartaBot.getJerarquia()) {
                 System.out.println("¡Ganaste la ronda!");
-                turno = true;
+                turno = !turno;
                 rondasGanadasJugador++;
             } else {
                 System.out.println("Perdiste la ronda.");
-                turno = false;
                 rondasGanadasBot++;
             }
-            inicioRondaPorBot = false;
         }
 
         if (rondasGanadasBot == 2){
