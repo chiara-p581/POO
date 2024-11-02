@@ -12,6 +12,7 @@ public class Partida {
     private List<Carta> manoBot;
     private int rondasGanadasJugador;
     private int rondasGanadasBot;
+    private Mazo mazo;
 
     public Partida() {
         this.bot = new Bot();
@@ -21,21 +22,17 @@ public class Partida {
         this.juegoActivo = true;
         this.rondasGanadasBot = 0;
         this.rondasGanadasJugador = 0;
+        this.mazo = new Mazo();
 
     }
 
     public void iniciarPartida() {
-        manoJugador = repartirMano();
-        manoBot = repartirMano();
+        manoJugador = mazo.repartir();
+        manoBot = mazo.repartir();
         bot.setMano(manoBot);
         System.out.println("Mano de Bot: " + manoBot);
         System.out.println("Mano de Jugador: " + manoJugador);
         resumen = new Resumen(manoJugador,manoBot);
-    }
-
-    public List<Carta> repartirMano() {
-        Mazo mazo = new Mazo();
-        return mazo.repartir();
     }
 
     public void ejecutarJuego() {
