@@ -1,0 +1,15 @@
+Resumen de la partida de Truco
+-----------------------------
+Puntaje final:
+Jugador: 2
+Bot: 0
+
+Mano del jugador:
+3 de Copa
+10 de Basto
+
+Mano del bot:
+12 de Espada
+10 de Espada
+
+Detalles adicionales...
